@@ -1,0 +1,30 @@
+{
+	"name": "shrunk-it",
+	"version": "1.0.0",
+	"description": "The simplist version cli url shortner",
+	"main": "index.js",
+	"author": "github.com/raiyanu",
+	"license": "CC0-1.0",
+	"private": false,
+	"type": "module",
+	"scripts": {
+		"build": "tsup src/index.ts --minify --dts --format cjs,esm --out-dir dist",
+		"build:dev": "tsup src/index.ts --dts --format cjs,esm --out-dir dist --watch",
+		"dev": "nodemon src/index.js"
+	},
+	"dependencies": {
+		"fastify": "^5.2.1",
+		"lowdb": "^7.0.1",
+		"nodemon": "^3.1.9",
+		"qs": "^6.14.0",
+		"ts-node": "^10.9.2",
+		"tsup": "^8.4.0",
+		"uuid": "^11.1.0"
+	},
+	"devDependencies": {
+		"@swc/core": "^1.11.9",
+		"@types/node": "^22.13.10",
+		"@types/qs": "^6.9.18",
+		"typescript": "^5.8.2"
+	}
+}
