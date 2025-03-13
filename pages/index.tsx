@@ -114,3 +114,8 @@ function UrlShortener() {
 }
 
 export default UrlShortener;
+
+// Login
+// JWT token
+// Personalized Dashboard
+// Shortend Links and information like : Date || Time || Long URL || Short URL || in a table format..
