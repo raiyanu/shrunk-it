@@ -1,4 +1,4 @@
-const { MongoClient, ServerApiVersion } = require("mongodb");
+import { MongoClient, ServerApiVersion } from "mongodb";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
@@ -15,9 +15,14 @@ export default async function handler(
 		console.log(slug);
 		if (typeof slug === "string") {
 			const collection = await getDB();
+			if (!collection) {
+				throw new Error("Failed to connect to the database");
+			}
 			const doc = await collection.findOne({ id: slug });
-			let link = doc.link.startsWith("http") ? doc.link : `https://${doc.link}`;
 			if (doc) {
+				const link = doc.link.startsWith("http")
+					? doc.link
+					: `https://${doc.link}`;
 				const url = new URL(link);
 				res.writeHead(307, { Location: url.toString() });
 				res.end();
@@ -33,6 +38,9 @@ export default async function handler(
 	}
 }
 
+if (!process.env.MONGO_URI) {
+	throw new Error("MONGO_URI is not defined in the environment variables");
+}
 const client = new MongoClient(process.env.MONGO_URI, {
 	serverApi: {
 		version: ServerApiVersion.v1,

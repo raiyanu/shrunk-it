@@ -6,7 +6,7 @@ function UrlShortener() {
 	const [showShortUrl, setShowShortUrl] = useState(false);
 	const [error, setError] = useState("");
 
-	const handleSubmit = async (e: any) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		if (url === "") {
 			console.log("URL is empty");

@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { MongoClient, ServerApiVersion } from "mongodb";
+import { Collection, MongoClient, ServerApiVersion } from "mongodb";
 import { v4 as uuidv4 } from "uuid";
 
 type Data = {
@@ -7,9 +7,6 @@ type Data = {
 	shortUrl?: string;
 	error?: string;
 };
-interface Request {
-	url: string;
-}
 export default async function handler(
 	req: NextApiRequest,
 	res: NextApiResponse<Data>
@@ -21,9 +18,8 @@ export default async function handler(
 				throw new Error("Failed to connect to MongoDB");
 			}
 			const UniqueId = await getUUID(collection);
-			let doc = null;
 			if (collection) {
-				doc = await collection.insertOne({ id: UniqueId, link: req.query.url });
+				await collection.insertOne({ id: UniqueId, link: req.query.url });
 			}
 			res.status(200).json({
 				shortUrl: `https://shrunk-it.vercel.app/s/${UniqueId}`,
@@ -32,9 +28,12 @@ export default async function handler(
 		} else {
 			res.status(400).json({ error: "Invalid URL" });
 		}
-	} catch (error) {}
+	} catch (error) {
+		console.error("Error shortening the URL:", error);
+		res.status(500).json({ error: "Server Error" });
+	}
 }
-async function getUUID(collection: any) {
+async function getUUID(collection: Collection) {
 	let UniqueId = generateCustomUuid(6);
 	// let existingDoc = await collection.findOne({ id: UniqueId });
 	// console.log(existingDoc);
