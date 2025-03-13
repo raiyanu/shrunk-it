@@ -1,5 +1,4 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import link from "./links";
 import { MongoClient, ServerApiVersion } from "mongodb";
 import { v4 as uuidv4 } from "uuid";
 
@@ -27,7 +26,7 @@ export default async function handler(
 				doc = await collection.insertOne({ id: UniqueId, link: req.query.url });
 			}
 			res.status(200).json({
-				shortUrl: `https://shrunk-it.vercel.app/api/s/${UniqueId}`,
+				shortUrl: `https://shrunk-it.vercel.app/s/${UniqueId}`,
 				url: req.query.url,
 			});
 		} else {
